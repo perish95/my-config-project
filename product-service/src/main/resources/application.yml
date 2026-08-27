@@ -1,0 +1,37 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    # name으로 결정되는 것
+    # 1. Eureka Server에 PRODUCT-SERVICE로 등록됨
+    # 2. Config Server에서 product-service.yml 파일을 찾음
+    name: product-service
+  
+  # Config Server 설정
+  # optional:
+  #  - Config Server 연결이 안 되도 오류 발생하지 말고, 애플리케이션 실행할 것
+  # configserver:
+  #  - Spring Cloud Config Client 라이브러리로 원격 설정을 가져옴
+  config:
+    import: "optional:configserver:http://localhost:8888/"
+
+# Eureka Client
+eureka:
+  client:
+    register-with-eureka: true  # Eureka Server에 등록함
+    fetch-registry: true        # Eureka Server로부터 서비스 정보를 가져옴
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server 등록
+
+# Actuator 설정
+# 엔드포인트 노출이 필요 (기본적으로 모든 엔드포인트는 막혀 있음)
+# 요청 방법
+#   POST http://localhost:{서비스포트}/actuator/refresh
+# 아래 주소로 접속하면 현재 활성화된 모든 엔드포인트 목록(URL) 확인 가능
+#   GET http://localhost:{서비스포트}/actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "refresh,health"  # 설정 갱신용 엔드포인트 활성화 필수

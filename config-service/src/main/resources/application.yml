@@ -1,0 +1,16 @@
+# Spring Cloud Config Server 포트 설정 (관례상 8888)
+server:
+  port: 8888  
+
+spring:
+  application:
+    name: config-service
+  
+  # Config Server
+  # GitHub Repository 주소와 검색할 브랜치 등록
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/perish95/my-config-project.git
+          default-label: main
